@@ -12,14 +12,14 @@ npm start
 ## Run from DockerHub
 
 ```
-docker run -d --name ccstamper -p 3003:3003 rootzoll/ccstamper
+docker run -d --name ccstamper -p 3006:3006 rootzoll/ccstamper
 ```
 
 ## Build and Rund Docker Locally
 
 ```
 docker build -t="rootzoll/ccstamper" .
-docker run -d --name ccstamper -p 3003:3003 rootzoll/ccstamper
+docker run -d --name ccstamper -p 3006:3006 rootzoll/ccstamper
 docker logs ccstamper -f
 ```
 
