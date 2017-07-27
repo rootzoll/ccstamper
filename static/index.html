@@ -1,0 +1,63 @@
+<html>
+    <head>
+        <title>CC Stamper</title>
+        <meta name="viewport" content="width=640" />
+        <style>
+            .output-license {
+                color: grey;
+                padding: 3px;
+            }
+            .win {
+                color: green;
+            }
+            .fail {
+                display: none;
+            }
+            #blend-button:active {
+                border-width: 0px;
+            }
+            :focus { outline: none; }
+        </style>
+        <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+<script
+  src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+  integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+  crossorigin="anonymous"></script>
+    </head>    
+    <body style=" font-family: Helvetica, Arial, Sans-Serif; padding:10px; text-align: center;">
+        <h1>Creative Commons Image Stamper</h1>
+
+
+        <img id="mixer" src="ccstamper-idee.png" style="max-height:250px;padding:24px;padding-bottom:8px;padding-top:4px;"/><br>
+
+
+        <div style="width: 440px;margin-top: 24px;margin-left: auto;margin-right: auto;font-size:60%; padding:8px; color: red;">
+            Its a prototype of a 1day hackathon. We invite everyone to develop this prototype together with us into a service the community can rely on for the future: info@edu-sharing.net
+        </div>
+
+        <div style="border-width: 1px;border-color: grey;border-style: solid;width: 440px;margin-top: 24px;min-height: 200px;background-color: rgba(255, 255, 0, 0.22);margin-left: auto;margin-right: auto;padding-bottom:24px;">
+            <h3>ccstamper API v0.1</h3>
+            <p style="color:grey;">Example Call:</p>
+            <p>TODO</p>
+            <!--
+            <code>http://HOST:PORT/mixer?in=cc-0&in=cc-by-sa</code>
+            <p style="color:grey;">Example Result:</p>
+            <code>{"ts":1493368173881,"input":["cc-0","cc-by-sa"],"output":["cc-by-sa"]}</code>
+            -->
+        </div>
+
+        <div style="width: 440px;margin-top: 24px;min-height: 200px;margin-left: auto;margin-right: auto;font-size:60%;">
+            by Matthias Hupfer &amp; Christian Rotzoll for edu-sharing OER hackathon 2017 <br/> <a href="https://github.com/edu-sharing/ccstamper">SourceCode on GitHub</a> is MIT License / <span style=""><a href="http://edu-sharing.com/impressum/">Impressum</a></span><br/>
+            <img src="edu-sharing.svg" style="max-width:120px; margin-top:12px;"/>
+        </div>
+
+    </body>
+</html>
+
+
+
+
+ 
