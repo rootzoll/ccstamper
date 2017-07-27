@@ -15,7 +15,7 @@ npm start
 docker run -d --name ccstamper -p 3006:3006 rootzoll/ccstamper
 ```
 
-## Build and Rund Docker Locally
+## Build and Run Docker Locally
 
 ```
 docker build -t="rootzoll/ccstamper" .
