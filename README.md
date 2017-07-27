@@ -9,7 +9,7 @@ npm install
 npm start
 ```
 
-## Run from DockerHub
+## Run from DockerHub (TODO)
 
 ```
 docker run -d --name ccstamper -p 3006:3006 rootzoll/ccstamper
