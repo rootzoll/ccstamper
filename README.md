@@ -2,12 +2,14 @@
 a stateless web service adding creative commons meta data to images 
 ![alt tag](https://github.com/rootzoll/ccstamper/blob/master/static/ccstamper-idee.png?raw=true)
 
-## Setup Locally
+## Setup Locally (for development)
 
 ```
 npm install
 npm start
 ```
+
+To run service on local development 'ImageMagick' and 'ExifTool' need to be installed. If you dont can/want to install these edit JS files and build local docker to test run.
 
 ## Run from DockerHub
 
