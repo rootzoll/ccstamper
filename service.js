@@ -59,8 +59,8 @@ app.post('/stamp', function (req, res) {
     }
 
     // file is PNG image
-    if (req.files.file.mimetype !== "image/png") {
-        res.status(500).send('file upload is not image/png');
+    if ((req.files.file.mimetype !== "image/png") && (req.files.file.mimetype !== "image/jpeg")) {
+        res.status(500).send('file upload MIME('+req.files.file.mimetype+') not allowed');
         return;
     }
 
@@ -111,12 +111,12 @@ var extendBottom = function (req, res) {
     // determine height of image
     imagemagick.identify(['-format', '%h', req.files.file.file], function(err, height){
         if (!err) {
-            console.log("OK --> IMAGE HEIGHT: "+height);
             req.image_height = parseInt(height);
+            console.log("OK --> IMAGE HEIGHT: "+req.image_height);
             imagemagick.identify(['-format', '%w', req.files.file.file], function(err, width){
                 if (!err) {
-                    console.log("OK --> IMAGE WIDTH: "+width);
                     req.image_width = parseInt(width);
+                    console.log("OK --> IMAGE WIDTH: "+req.image_width);
                     imagemagick.convert([req.files.file.file,'-background','#'+req.image_backgroundColor,'-extent', req.image_width+'x'+(req.image_height+15),req.files.file.file], function(err, result){
                         if (!err) {
                             console.log("OK --> ADDED FOOTER SPACE");
@@ -157,78 +157,101 @@ var stampInfo = function(req, res) {
 
             if (!err) {
 
-                console.log("OK Watermark");
+                console.log("OK --> STAMPING TEXT INFO ON IMAGE");
 
-                addExifData(res, req);
+                if (stringEndsWith(req.files.file.file.toLowerCase(),'.png')) {
+                    console.log("INFO --> Image is PNG - so skip EXIF data edit (just available on JPEG)");
+                    returnFile(req, res);
+                    cleanup(req, res);
+                } else {
+                    addExifData(req, res);
+                }
 
             } else {
-                cleanup(req, res, "FAILED TO WATERMARK (CB): "+JSON.stringify(err));
+                cleanup(req, res, "FAILED TO STAMP (CB): "+JSON.stringify(err));
             }
 
         });
 
 
     } catch (e) {
-        cleanup(req, res, "FAILED TO WATERMARK: "+JSON.stringify(e));
+        cleanup(req, res, "FAILED TO STAMP: "+JSON.stringify(e));
     }
 };
 
-var addExifData = function(res, req) {
+var addExifData = function(req, res) {
 
     var ep = new exiftool.ExiftoolProcess();
     ep.open().then(
         function() {
+
+            var license = "CC0 (Public Domain)";
+            var licenseText = 'http://creativecommons.org/publicdomain/zero/1.0/deed';
+            if (req.body.license!=="cc-0") {
+                license = req.body.license.toUpperCase() + ' 4.0';
+                licenseText = 'http://creativecommons.org/licenses/'+req.body.license.substr(3)+'/4.0/';
+            }
+
+            console.log("EXIFDATA License: "+license);
+            console.log("EXIFDATA LicenseText: "+licenseText);
+
             ep.writeMetadata(req.files.file.file, {
-                all: '', // remove existing tags
-                comment: 'Exiftool rules!',
-                'Keywords+': [ 'keywordA', 'keywordB' ]
-            }, ['overwrite_original'])})
-        .then(console.log, console.error)
-        .then(function() {
-            ep.close();
+                //all: '', // remove existing tags
+                CreatorTool: 'ccstamper',
+                Artist : req.body.by,
+                Copyright : license,
+                CopyrightNotice : licenseText,
+                CopyrightFlag : (req.body.license!=="cc-0") ? 'False' : 'True'
+            }, ['overwrite_original'])
 
-            // load and return uploaded image as response
-            var img = fs.readFileSync(req.files.file.file);
-            res.writeHead(200, {'Content-Type': 'image/png' });
-            res.end(img, 'binary');
+            //ep.readMetadata(req.files.file.file, ['-File:all'])
 
-            cleanup(req, res);
-        }).catch(console.error);
+            .then(console.log, console.error)
+            .then(function() {
 
-    /*
-    ep.open().then( function() {
+                console.log("OK --> EXIF DATA added");
+
+                // success final
+                ep.close();
+                returnFile(req, res);
+                cleanup(req, res);
+            });
+
+        });
+
+};
+
+// send back the uploaded (and modified) file
+var returnFile = function(req, res) {
+    var img = fs.readFileSync(req.files.file.file);
+    if (stringEndsWith(req.files.file.file.toLowerCase(), ".png")) {
+        res.writeHead(200, {'Content-Type': 'image/png'});
+    } else {
+        res.writeHead(200, {'Content-Type': 'image/jpeg'});
     }
-    => ep.writeMetadata(req.files.file.file, {
-        all: '',
-        'Artist' : 'hupfer',
-        'Copyright' : 'CC-BY',
-        'CopyrightNotice'                : 'CC-BY',
-        'CopyrightFlag'                 : 'True',
-        'URL'                            : 'http://www.swsw.swwdede.de',
-        'xmp:usageterms':'usage terms',
-        'By-line' : 'by hupfer',
-        'Object Name'   : 'ein titel',
-        'Rights'  : 'CC-BY',
-        'Title' : 'titel',
-        'Creator'  :'by hupfer',
-        'WebStatement'                 : 'http://www.swsw.swwdede.de',
-        'Object'                          : 'ein titel'
-
-    }, ['overwrite_original'])).then(console.log, console.error).then(() => ep.close()).catch(console.error);
-    */
-
+    res.end(img, 'binary');
+    console.log("OK --> SEND BACK BINARY IMAGE FILE '"+req.files.file.file+"'");
 };
 
 var cleanup = function(req, res, errMsg) {
 
     // delete uploaded file
-    deleteFolderRecursive("./uploads/"+req.files.file.uuid);
+    var tempFiles = "./uploads/" + req.files.file.uuid;
+    try {
+        deleteFolderRecursive(tempFiles);
+        console.log("OK --> CLEAN UP TEMP FILES '"+tempFiles+"'");
+    } catch(e) {
+        console.log("FAIL --> CLEAN UP TEMP FILES '"+tempFiles+"'");
+    }
 
     // final respond with error message
     if (typeof errMsg !== "undefined") {
-        console.log("FAIL: "+errMsg);
+        console.log("!! FAIL !!!!!!!!!!!!!!!!!!!!");
+        console.log("ERROR MESSAGE: "+errMsg);
         res.status(500).send(errMsg);
     }
+
+    console.log("** END ********************");
 
 };
 
@@ -255,3 +278,8 @@ var getBrightnessFactorFromHexcode = function(hexCode) {
     var b = parseInt(hexCode.substr(4, 2),16);
     return ((r * 299) + (g * 587) + (b * 114)) / 1000;
 };
+
+// check if string ends on a suffix
+function stringEndsWith(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+}

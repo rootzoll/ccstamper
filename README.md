@@ -9,10 +9,11 @@ npm install
 npm start
 ```
 
-## Run from DockerHub (TODO)
+## Run from DockerHub
 
 ```
 docker run -d --name ccstamper -p 3006:3006 rootzoll/ccstamper
+docker logs ccstamper -f
 ```
 
 ## Build and Run Docker Locally
@@ -23,7 +24,9 @@ docker run -d --name ccstamper -p 3006:3006 rootzoll/ccstamper
 docker logs ccstamper -f
 ```
 
-
 ## ccstamper API v0.1
 
-TODO
+Run Docker container locally and open in browser to see API live doc
+```
+http://localhost:3006
+```
