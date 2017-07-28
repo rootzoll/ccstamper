@@ -8,6 +8,7 @@ ENV HOME=/home/app
 ADD ./package.json $HOME/package.json
 ADD ./static $HOME/static
 ADD ./service.js $HOME/service.js
+ADD ./watermark.js $HOME/watermark.js
 
 # create upload folder
 RUN mkdir $HOME/uploads && chmod 777 $HOME/uploads

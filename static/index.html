@@ -26,22 +26,40 @@
 
         <div style="border-width: 1px;border-color: grey;border-style: solid;width: 440px;margin-top: 24px;min-height: 200px;background-color: rgba(255, 255, 0, 0.22);margin-left: auto;margin-right: auto;padding-bottom:24px;">
             <h3>ccstamper API v0.1</h3>
-            <p style="color:grey;">Example Call:</p>
+            <p>Example HTTP POST Call (multipart/form-data):</p>
             <form  method="POST">
 
             </form>
 
             <form action="./stamp" method="post" enctype="multipart/form-data">
 
-                <label>Wählen Sie eine Bilddatei von Ihrem Rechner aus (file):<br>
+                <h4>Image-File:</h4>
+
+                <label>[file] image file that you want to stamp:<br>
                     <input name="file" type="file" accept="image/png">
                 </label><br>
 
-                <label>Autor (autor):<br>
-                    <input type="text" name="autor">
+                <h4>License &amp; Metadata:</h4>
+
+                <label>[license] creative commons license (version 4.0):<br>
+                    <select name="license">
+                        <option value="cc-0">cc-0</option>
+                        <option value="cc-by">cc-by</option>
+                        <option value="cc-by-sa">cc-by-sa</option>
+                        <option value="cc-by-nd">cc-by-nd</option>
+                        <option value="cc-by-nc">cc-by-nc</option>
+                        <option value="cc-by-nc-sa">cc-by-nc-sa</option>
+                        <option value="cc-by-nc-nd">cc-by-nc-nd</option>
+                    </select>
                 </label><br><br>
 
-                <button>Daten per multipart/form-data POST an ./stamp API Endpunkt senden</button>
+                <label>[by] author name(s) of the image:<br>
+                    <input type="text" name="by">
+                </label><br>
+
+                <br>
+
+                <button>send to './stamp' API endpoint</button>
             </form>
 
         </div>
