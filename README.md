@@ -1,8 +1,6 @@
 # ccstamper
-
-![alt tag](https://github.com/rootzoll/ccstamper/blob/master/static/ccstamper-idee.png?raw=true)
-
 a stateless web service adding creative commons meta data to images 
+![alt tag](https://github.com/rootzoll/ccstamper/blob/master/static/ccstamper-idee.png?raw=true)
 
 ## Setup Locally (for development)
 
