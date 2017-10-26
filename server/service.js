@@ -29,8 +29,15 @@ app.get('/stamp', function (req, res) {
 
 });
 
+app.options('/stamp', function(req, res) {
+  console.log("writing headers only");
+  res.header("Access-Control-Allow-Origin", "*");
+  res.end('');
+});
+
 app.post('/stamp', function (req, res) {
 
+    console.log("v2");
     console.log("** POST ********************");
 
     // debug request
@@ -224,13 +231,28 @@ var addExifData = function(req, res) {
 // send back the uploaded (and modified) file
 var returnFile = function(req, res) {
     var img = fs.readFileSync(req.files.file.file);
+    var base64Start = 'data:image/png;base64,';
     if (stringEndsWith(req.files.file.file.toLowerCase(), ".png")) {
-        res.writeHead(200, {'Content-Type': 'image/png'});
+        res.writeHead(200, {'Content-Type': 'image/png', 'Access-Control-Allow-Origin': '*'});
     } else {
-        res.writeHead(200, {'Content-Type': 'image/jpeg'});
+        res.writeHead(200, {'Content-Type': 'image/jpeg', 'Access-Control-Allow-Origin': '*'});
+        base64Start = 'data:image/jpeg;base64,';
     }
-    res.end(img, 'binary');
-    console.log("OK --> SEND BACK BINARY IMAGE FILE '"+req.files.file.file+"'");
+
+    // if not cc-0 a valid author string is needed
+    if ((typeof req.body.format !== "undefined") && (req.body.format==='base64')) {
+
+
+      res.end(base64Start+img.toString('base64'));
+      console.log("OK --> SEND BACK BASE64 IMAGE FILE '"+req.files.file.file+"'");
+
+    } else {
+
+      res.end(img, 'binary');
+      console.log("OK --> SEND BACK BINARY IMAGE FILE '"+req.files.file.file+"'");s
+    }
+
+
 };
 
 var cleanup = function(req, res, errMsg) {

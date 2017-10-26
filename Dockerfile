@@ -5,10 +5,10 @@ RUN useradd --user-group --create-home --shell /bin/false app
 
 # create directory structure
 ENV HOME=/home/app
-ADD ./package.json $HOME/package.json
-ADD ./static $HOME/static
-ADD ./service.js $HOME/service.js
-ADD ./watermark.js $HOME/watermark.js
+ADD ./server/package.json $HOME/package.json
+ADD ./server/service.js $HOME/service.js
+ADD ./server/watermark.js $HOME/watermark.js
+ADD ./dist $HOME/static
 
 # create upload folder
 RUN mkdir $HOME/uploads && chmod 777 $HOME/uploads

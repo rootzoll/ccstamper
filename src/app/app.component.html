@@ -1,0 +1,121 @@
+<!-- Fixed Header -->
+
+<div style="margin-top: 10px; height: 160px;">
+  <img src="assets/stamper.png" style="
+      width: 100%;
+      max-width: 150px;
+      position: relative;
+      top: 5px;
+  ">
+</div>
+
+<div style="
+    text-align: center;">
+
+  <span>
+  <div style="
+    color: white;
+    display: table-cell;
+    background-color: #54c19f;
+    height: 30px;
+    width: 34px;
+    border-radius: 30px;
+    font-size: 24px;
+    padding-top: 3px;
+  ">{{step}}</div>
+  <div style="display: table-cell;
+    padding-left: 9px;
+    font-weight: 600;">
+    <span *ngIf="step==1">Choose an image</span>
+    <span *ngIf="step==2">Choose a license</span>
+    <span *ngIf="step==3">Name Author</span>
+  </div>
+  </span>
+
+  <div *ngIf="step==2" style="height: 60px;">
+
+  <span style=" color: grey;
+    font-size: 12px;">
+    Creative commons license (Verison 4.0)
+  </span><br>
+
+  <select name="license" id="license" [(ngModel)]="license">
+    <option value="cc-0">cc-0</option>
+    <option value="cc-by">cc-by</option>
+    <option value="cc-by-sa">cc-by-sa</option>
+    <option value="cc-by-nd">cc-by-nd</option>
+    <option value="cc-by-nc">cc-by-nc</option>
+    <option value="cc-by-nc-sa">cc-by-nc-sa</option>
+    <option value="cc-by-nc-nd">cc-by-nc-nd</option>
+  </select>
+  <button md-raised-button (click)="buttonLicense()" color="primary" style="margin-top: 0px;">Next</button>
+  </div>
+
+  <div *ngIf="step==3" style="height: 60px;">
+  <span style=" color: grey;
+    font-size: 12px;">
+    Show should the author be named?
+  </span><br>
+    <input type="text" [(ngModel)]="author" style="height: 31px; padding-left: 13px;">
+    <button md-raised-button (click)="buttonAuthor()" color="primary" style="margin-top: 0px;">Next</button>
+  </div>
+
+  </div>
+
+<!-- Basic Upload Section -->
+
+<div ng2FileDrop *ngIf="step==1" class="custom-component-drop-zone"
+     [ng2FileDropAcceptMultiple]="true"
+     (ng2FileDropFileAccepted)="dragFileAccepted($event)"
+     (ng2FileDropFileRejected)="dragFileRejected($event)"
+>
+
+  <div *ngIf="step==1">
+    <img src="assets/uploadcloud.png" style="max-width: 103px;
+    margin-top: 8px;
+    opacity: 0.1;">
+
+    <div style=" color: #d0cdcd; margin-top: 16px; font-weight: 600">Drop Image here</div>
+
+    <input id="manualFileSelect" type="file" (change)="manualChooseFile($event)" style="visibility:hidden" #manualFileSelect multiple accept="image/gif, image/jpeg, image/png"/><br>
+    <button md-raised-button (click)="manualFileSelect.click()" color="primary" style="margin-top: 0px;">Choose File</button>
+  </div>
+
+</div>
+
+<div *ngIf="step>1" style="margin: 16px; width: 300px; margin-left:auto; margin-right: auto; text-align: left;">
+
+  <div *ngFor="let image of images" style="margin:10px;">
+
+    <img [src]="image.dataURL" style="
+      width: 300px;
+      border-color: lightgray;
+      border-width: 1px;
+      border-style: solid;"/>
+
+    <div style="width: 300px">
+      <table style="width:100%; height: 40px;">
+        <tr>
+          <td style="width: 50%; text-align: left; font-size: 12px; color: lightgray;">{{image.name}}</td>
+          <td style="width: 50%; text-align: right;">
+            <a  *ngIf="step==5" [href]="image.dataURL" target="_blank">Download (save as)</a>
+            <!--<button md-raised-button *ngIf="step==5" (click)="buttonDownload(image)" color="primary" style="margin-top: 0px;">Download</button>-->
+          </td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+
+  <button md-raised-button *ngIf="(step==4) && (images.length>1)" (click)="buttonDownloadZip()" color="#54c19f" style="margin-top: 16px; width: 100%; max-width: 300px;">Download ZIP</button>
+
+  <div *ngIf="step==4" style="position: absolute; top: 300px; padding-left: 35px;">
+    <md-progress-bar
+      class="example-margin"
+      style="width: 250px;  margin-left:auto; margin-right: auto; margin-top: 16px;"
+      [value]="uploadProgress"
+      [mode]="(uploadProgress == 0) ? 'indeterminate' : 'determinate'">
+    </md-progress-bar>
+  </div>
+
+</div>

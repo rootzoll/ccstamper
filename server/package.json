@@ -1,0 +1,35 @@
+{
+  "name": "ccstamper",
+  "version": "0.0.1",
+  "description": "a stateless web service adding creative commons meta data to images ",
+  "main": "service.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node service.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rootzoll/ccstamper.git"
+  },
+  "keywords": [
+    "creative",
+    "commons",
+
+    "image",
+    "metadata"
+  ],
+  "author": "Christian Rotzoll, Matthias Hupfer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rootzoll/ccstamper/issues"
+  },
+  "homepage": "https://github.com/rootzoll/ccstamper#readme",
+  "dependencies": {
+    "express": "^4.15.2",
+    "express-busboy": "6.0.1",
+    "imagemagick":"0.1.3",
+    "node-exiftool":"2.2.0",
+    "dominant-color":"0.0.1",
+    "image-watermark":"0.0.7"
+  }
+}

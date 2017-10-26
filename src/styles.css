@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+html {
+  text-align: center;
+  font-family: Arial;
+}
+
+.custom-component-drop-zone {
+  width: 400px;
+  height: 200px;
+  border-width: 2px;
+  border-style: dashed;
+  border-color: lightgrey;
+  border-radius: 8px;
+  margin: 16px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mat-checkbox-label {
+  padding-left: 8px;
+}
+
+.mat-raised-button.mat-primary {
+  background-color: #54c19f;
+}
