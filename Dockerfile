@@ -16,6 +16,7 @@ RUN mkdir $HOME/uploads && chmod 777 $HOME/uploads
 ENV NODE_PATH=$HOME/node_modules
 
 # install exiftool
+RUN sudo apt-get update -q -y
 RUN sudo apt-get -q -y install libimage-exiftool-perl perl-doc
 
 RUN chown -R app:app $HOME/*

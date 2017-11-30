@@ -15,7 +15,7 @@ To run service on local development 'ImageMagick' and 'ExifTool' need to be inst
 ## Run from DockerHub
 
 ```
-docker run -d --name ccstamper -p 3006:3006 rootzoll/ccstamper:2.0
+docker run -d --name ccstamper -p 3006:3006 rootzoll/ccstamper:2.1
 docker logs ccstamper -f
 ```
 
@@ -24,8 +24,8 @@ docker logs ccstamper -f
 ```
 npm install
 ng build
-docker build -t="rootzoll/ccstamper:2.0" .
-docker run -d --name ccstamper -p 3006:3006 rootzoll/ccstamper:2.0
+docker build -t="rootzoll/ccstamper:2.1" .
+docker run -d --name ccstamper -p 3006:3006 rootzoll/ccstamper:2.1
 docker logs ccstamper -f
 ```
 
